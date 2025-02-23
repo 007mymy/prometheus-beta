@@ -23,14 +23,12 @@ def find_longest_common_subsequence(str1: str, str2: str) -> str:
     if not str1 or not str2:
         return ""
     
-    # Create a matrix to store LCS lengths
-    m, n = len(str1), len(str2)
-    
-    # If no subsequence can exist due to case mismatch, return empty string
-    if str1.lower() != str2.lower() and len(set(str1.lower()) & set(str2.lower())) == 0:
+    # Reject case-insensitive matches
+    if str1.lower() == str2.lower() and str1 != str2:
         return ""
     
-    # Create dynamic programming table
+    # Create a matrix to store LCS lengths
+    m, n = len(str1), len(str2)
     dp = [[0] * (n + 1) for _ in range(m + 1)]
     
     # Build the dp table
