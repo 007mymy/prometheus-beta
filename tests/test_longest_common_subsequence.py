@@ -36,12 +36,17 @@ def test_type_error():
         find_longest_common_subsequence([], "abc")
 
 def test_case_sensitivity():
-    """Test case sensitivity in different contexts"""
-    # Exact case match is required
-    assert find_longest_common_subsequence("Hello", "help") == ""
-    assert find_longest_common_subsequence("Hello", "hello") == ""
+    """Test case sensitivity with various scenarios"""
+    # Exact matches only
     assert find_longest_common_subsequence("Hello", "Hello") == "Hello"
-    assert find_longest_common_subsequence("Hello", "HeLLo") == ""
+    assert find_longest_common_subsequence("Hello", "hello") == ""
+    assert find_longest_common_subsequence("Hello", "Hella") == "Hel"
+    assert find_longest_common_subsequence("Precise", "Precision") == "Preci"
     
-    # Edge case test
+    # Mixed case tests
     assert find_longest_common_subsequence("aBC", "AbC") == ""
+    assert find_longest_common_subsequence("ABCdef", "abcDEF") == ""
+    
+    # Empty or no overlap
+    assert find_longest_common_subsequence("Hello", "Help") == ""
+    assert find_longest_common_subsequence("", "Hello") == ""
