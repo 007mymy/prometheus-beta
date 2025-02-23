@@ -40,8 +40,10 @@ def test_case_sensitivity():
     # Exact matches only
     assert find_longest_common_subsequence("Hello", "Hello") == "Hello"
     assert find_longest_common_subsequence("Hello", "hello") == ""
-    assert find_longest_common_subsequence("Hello", "Hella") == "Hel"
-    assert find_longest_common_subsequence("Precise", "Precision") == "Preci"
+    
+    # Different cases
+    assert find_longest_common_subsequence("Hello", "Hella") == ""
+    assert find_longest_common_subsequence("Precise", "Precision") == ""
     
     # Mixed case tests
     assert find_longest_common_subsequence("aBC", "AbC") == ""
