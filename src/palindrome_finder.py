@@ -6,7 +6,7 @@ def find_palindrome_substrings(s: str) -> list:
         s (str): Input string to search for palindrome substrings
     
     Returns:
-        list: Sorted list of unique palindrome substrings, 
+        list: Sorted list of palindrome substrings, 
               sorted first by length (descending), 
               then alphabetically
     
@@ -20,8 +20,8 @@ def find_palindrome_substrings(s: str) -> list:
     if not s or len(s) == 0:
         return []
     
-    # Set to store unique palindrome substrings
-    palindromes = set()
+    # List to store palindrome substrings
+    palindromes = []
     
     # Check all possible substrings
     for i in range(len(s)):
@@ -30,7 +30,12 @@ def find_palindrome_substrings(s: str) -> list:
             
             # Check if substring is a palindrome
             if substring == substring[::-1]:
-                palindromes.add(substring)
+                palindromes.append(substring)
     
     # Sort palindromes by length (descending) and then alphabetically
-    return sorted(list(palindromes), key=lambda x: (-len(x), x))
+    # Use sorted with a custom key that ensures exact sorting requirements
+    return sorted(
+        palindromes, 
+        key=lambda x: (-len(x), x), 
+        reverse=False
+    )
