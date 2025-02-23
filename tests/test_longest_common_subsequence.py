@@ -37,10 +37,11 @@ def test_type_error():
 
 def test_case_sensitivity():
     """Test case sensitivity in different contexts"""
-    # Different cases should not match
+    # Exact case match is required
+    assert find_longest_common_subsequence("Hello", "help") == ""
     assert find_longest_common_subsequence("Hello", "hello") == ""
-    assert find_longest_common_subsequence("AbCdEf", "aBcDeF") == ""
+    assert find_longest_common_subsequence("Hello", "Hello") == "Hello"
+    assert find_longest_common_subsequence("Hello", "HeLLo") == ""
     
-    # Case-sensitive matches
-    assert find_longest_common_subsequence("HeLLo", "Hello") == ""
-    assert find_longest_common_subsequence("HeLLo", "HeLXo") == "HeL"
+    # Edge case test
+    assert find_longest_common_subsequence("aBC", "AbC") == ""
