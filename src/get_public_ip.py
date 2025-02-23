@@ -23,21 +23,26 @@ def get_public_ip() -> str:
         # Strip any whitespace
         ip_address = response.text.strip()
         
-        # Use a more robust IP validation regex
-        ip_pattern = re.compile(r'^(\d{1,3}\.){3}\d{1,3}$')
-        if not ip_pattern.match(ip_address):
-            raise ValueError(f"Invalid IP address format: {ip_address}")
-        
-        # Additional numeric validation for each octet
-        octets = ip_address.split('.')
-        for octet in octets:
-            octet_value = int(octet)
-            if octet_value < 0 or octet_value > 255:
-                raise ValueError(f"IP octet out of range: {octet}")
+        # Validate IP format and octets
+        try:
+            # Use a more robust IP validation regex
+            ip_pattern = re.compile(r'^(\d{1,3}\.){3}\d{1,3}$')
+            if not ip_pattern.match(ip_address):
+                raise ValueError()
+            
+            # Additional numeric validation for each octet
+            octets = ip_address.split('.')
+            if len(octets) != 4:
+                raise ValueError()
+            
+            for octet in octets:
+                octet_value = int(octet)
+                if octet_value < 0 or octet_value > 255:
+                    raise ValueError()
+        except (ValueError, TypeError):
+            raise ValueError("Invalid IP address format")
         
         return ip_address
     
     except requests.RequestException as e:
         raise ConnectionError(f"Network error when retrieving IP: {e}")
-    except (ValueError, TypeError) as e:
-        raise ValueError(f"IP validation error: {e}")
