@@ -32,10 +32,10 @@ def find_palindrome_substrings(s: str) -> list:
             if substring == substring[::-1]:
                 palindromes.append(substring)
     
-    # Sort palindromes by length (descending) and then alphabetically
-    # Use sorted with a custom key that ensures exact sorting requirements
-    return sorted(
-        palindromes, 
-        key=lambda x: (-len(x), x), 
-        reverse=False
-    )
+    # Sort palindromes with specific requirements:
+    # 1. Descending length 
+    # 2. Alphabetical for equal lengths
+    # 3. Preserve duplicates
+    palindromes.sort(key=lambda x: (-len(x), x))
+    
+    return palindromes
