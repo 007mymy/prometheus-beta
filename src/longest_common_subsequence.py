@@ -25,12 +25,18 @@ def find_longest_common_subsequence(str1: str, str2: str) -> str:
     
     # Create a matrix to store LCS lengths
     m, n = len(str1), len(str2)
+    
+    # If no subsequence can exist due to case mismatch, return empty string
+    if str1.lower() != str2.lower() and len(set(str1.lower()) & set(str2.lower())) == 0:
+        return ""
+    
+    # Create dynamic programming table
     dp = [[0] * (n + 1) for _ in range(m + 1)]
     
     # Build the dp table
     for i in range(1, m + 1):
         for j in range(1, n + 1):
-            # Strict character match (case-sensitive)
+            # Exact character match (case-sensitive)
             if str1[i-1] == str2[j-1]:
                 dp[i][j] = dp[i-1][j-1] + 1
             else:
