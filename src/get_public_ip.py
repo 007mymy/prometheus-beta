@@ -1,6 +1,7 @@
 import requests
+import re
 
-def get_public_ip():
+def get_public_ip() -> str:
     """
     Retrieve the public IP address of the system.
 
@@ -17,21 +18,26 @@ def get_public_ip():
         
         # Validate the response
         if response.status_code != 200:
-            raise ConnectionError("Failed to retrieve public IP")
+            raise ConnectionError(f"Failed to retrieve public IP. Status code: {response.status_code}")
         
-        # Strip any whitespace and validate IP format
+        # Strip any whitespace
         ip_address = response.text.strip()
         
-        # Basic IP address validation
-        parts = ip_address.split('.')
-        if len(parts) != 4:
-            raise ValueError("Invalid IP address format")
+        # Use a more robust IP validation regex
+        ip_pattern = re.compile(r'^(\d{1,3}\.){3}\d{1,3}$')
+        if not ip_pattern.match(ip_address):
+            raise ValueError(f"Invalid IP address format: {ip_address}")
         
-        for part in parts:
-            if not part.isdigit() or not (0 <= int(part) <= 255):
-                raise ValueError("Invalid IP address format")
+        # Additional numeric validation for each octet
+        octets = ip_address.split('.')
+        for octet in octets:
+            octet_value = int(octet)
+            if octet_value < 0 or octet_value > 255:
+                raise ValueError(f"IP octet out of range: {octet}")
         
         return ip_address
     
     except requests.RequestException as e:
         raise ConnectionError(f"Network error when retrieving IP: {e}")
+    except (ValueError, TypeError) as e:
+        raise ValueError(f"IP validation error: {e}")
